@@ -29,12 +29,16 @@ public with sharing class NextStepFuture {
      */
     @future
      public static void  updateAllAccountAndOpportunityNextSteps() {
+      // Get list of all accounts  
       List<Account> allAccounts          = [SELECT Id, Name, Next_Step__c FROM Account];
+      // Get list of all opportunities
       List<Opportunity> allOpportunities = [SELECT Id, Name, NextStep FROM Opportunity];
 
+      // Update Next Step custom field on Accounts 
       for(Account acct : allAccounts){
          acct.Next_Step__c = 'Meeting in the future';
       }
+      // Update Next Step standard field on Opportunities
       for(Opportunity Opp : allOpportunities){
         opp.NextStep = 'Meeting in the future';
      }
