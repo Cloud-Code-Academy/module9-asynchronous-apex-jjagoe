@@ -27,9 +27,26 @@ public with sharing class NextStepFuture {
      * Opportunity Next Step field is a standard field
      * Update the corresponding test class AsynchronousTest and test method nextStepFuture_testUpdateAllNextStep to cover test this method
      */
-    //[public | private ] [static] data_type method_name (input parameters) {
-    //  The body of the method
-    //}
+    @future
+     public static void  updateAllAccountAndOpportunityNextSteps() {
+      // Get list of all accounts  
+      List<Account> allAccounts          = [SELECT Id, Name, Next_Step__c FROM Account];
+      // Get list of all opportunities
+      List<Opportunity> allOpportunities = [SELECT Id, Name, NextStep FROM Opportunity];
+
+      // Update Next Step custom field on Accounts 
+      for(Account acct : allAccounts){
+         acct.Next_Step__c = 'Meeting in the future';
+      }
+      // Update Next Step standard field on Opportunities
+      for(Opportunity Opp : allOpportunities){
+        opp.NextStep = 'Meeting in the future';
+     }
+
+     update allAccounts;
+     update allOpportunities;
+
+    }
 
     /*
     * Question 2
@@ -38,12 +55,12 @@ public with sharing class NextStepFuture {
     * Update the corresponding test class AsynchronousTest and test method nextStepFuture_testCreateDealAndUpdateRole to cover test this method
     */
     //Mix DML Error happens when you try to perform DML operations on setup and non-setup objects in a single transaction.
+    
     public static void createDealAndUpdateRole() {
         Opportunity bigDeal = new Opportunity();
         insertBigDeal(bigDeal);
 
-        UserRole[] roles = [SELECT Id, Name FROM UserRole WHERE Id = :UserInfo.getUserRoleId() OR Name = 'CRO' LIMIT 1];
-        updateUserRoleName(roles);
+        updateUserRoleName();
     }
 
     // Helper method to insert big deal
@@ -58,7 +75,9 @@ public with sharing class NextStepFuture {
 
 
     // Helper method to update role name
-    private static void updateUserRoleName(UserRole[] roles){
+    @future
+    private static void updateUserRoleName(){
+        UserRole[] roles = [SELECT Id, Name FROM UserRole WHERE Id = :UserInfo.getUserRoleId() OR Name = 'CRO' LIMIT 1];
         UserRole role;
         if (roles.isEmpty()) {
             role = new UserRole();
