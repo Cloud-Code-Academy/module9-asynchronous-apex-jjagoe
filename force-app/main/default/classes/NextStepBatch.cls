@@ -64,7 +64,7 @@ public with sharing class NextStepBatch implements Database.Batchable<sObject>{
         final List<User> USERS = [
                SELECT Id, Name, Email 
                FROM User 
-               WHERE IsActive = true AND (NOT Email LIKE 'autoproc%')]; // DO NOT CHANGE
+               WHERE IsActive = true AND (NOT Email LIKE 'autoproc%')]; 
 
         // Get the email addresses of all active users
         Set<String> userEmails = new Set<String>();
